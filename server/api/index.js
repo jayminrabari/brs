@@ -20,29 +20,26 @@ app.use("/api/transactions", transactionRoutes);
 
 // Connection
 const connectDB = async () => {
-  for (let i = 0; i < 5; i++) {
+  if (mongoose.connection.readyState === 0) { // Only connect if not already connected
     try {
       await mongoose.connect(process.env.MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
       console.log("MongoDB Connected");
-      return; // Exit if connected successfully
     } catch (error) {
-      console.error(`MongoDB connection attempt ${i + 1} failed:`, error.message);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retrying
+      console.error("MongoDB connection error:", error.message);
+      throw new Error("Database connection failed");
     }
   }
-  throw new Error("Failed to connect to MongoDB after multiple attempts");
 };
 
 // Export the app for Vercel
 module.exports = async (req, res) => {
-  // Connect to MongoDB only when the function is invoked
-  if (!mongoose.connection.readyState) {
-    await connectDB();
+  try {
+    await connectDB(); // Ensure DB connection on each invocation
+    return app(req, res); // Use the Express app to handle requests
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
-
-  // Handle requests using the Express app
-  return app(req, res);
 };
