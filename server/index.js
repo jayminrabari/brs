@@ -7,8 +7,16 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'https://brs-z72z.vercel.app', // Your client URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow credentials (like cookies)
+};
+
+app.use(cors(corsOptions)); // Use CORS middleware with options
+
 app.use(express.json());
-app.use(cors());
 
 const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
