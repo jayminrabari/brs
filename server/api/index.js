@@ -15,7 +15,6 @@ const allowedOrigins = [
 // Use CORS middleware
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, origin);
     } else {
@@ -29,6 +28,9 @@ app.use(express.json());
 const bookRoutes = require("../routes/bookRoutes");
 const userRoutes = require("../routes/userRoutes");
 const transactionRoutes = require("../routes/transactionRoutes");
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use("/api/books", bookRoutes);
 app.use("/api/users", userRoutes);
@@ -44,7 +46,6 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
 
 // Export the app for Vercel
 module.exports = async (req, res) => {
