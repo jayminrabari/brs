@@ -20,17 +20,13 @@ app.use("/api/transactions", transactionRoutes);
 
 // Connection
 const connectDB = async () => {
-  for (let i = 0; i < 5; i++) {
-    try {
-      await mongoose.connect(process.env.MONGO_URI); // Remove the deprecated options
-      console.log("MongoDB Connected");
-      return; // Exit if connected successfully
-    } catch (error) {
-      console.error(`MongoDB connection attempt ${i + 1} failed:`, error.message);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retrying
-    }
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    process.exit(1);
   }
-  throw new Error("Failed to connect to MongoDB after multiple attempts");
 };
 
 
