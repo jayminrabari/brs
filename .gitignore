@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+client/build/
+server/build/
+client/dist/
+server/dist/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+client/.env
+server/.env
+
+# npm package lock
+package-lock.json
+client/package-lock.json
+server/package-lock.json
+
+# Yarn lock file
+yarn.lock
+client/yarn.lock
+server/yarn.lock
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage directory
+coverage/
