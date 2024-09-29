@@ -7,12 +7,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-
+// Define allowed origins
 const allowedOrigins = [
   'https://brs-z72z.vercel.app', // Your frontend URL
 ];
 
+// Use CORS middleware
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -24,6 +24,7 @@ app.use(cors({
   },
 }));
 
+app.use(express.json());
 
 const bookRoutes = require("../routes/bookRoutes");
 const userRoutes = require("../routes/userRoutes");
